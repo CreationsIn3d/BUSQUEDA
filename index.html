@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ver y Borrar Datos de Hoja de Cálculo</title>
+    <title>Buscar y Ver Datos de Hoja de Cálculo</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -38,6 +38,12 @@
         th {
             background-color: #f2f2f2;
         }
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
         button {
             padding: 10px;
             background: #333;
@@ -52,7 +58,9 @@
 </head>
 <body>
     <div class="container">
-        <h1>Datos de Hoja de Cálculo</h1>
+        <h1>Buscar y Ver Datos de Hoja de Cálculo</h1>
+        <input type="text" id="searchName" placeholder="Ingrese el nombre a buscar">
+        <button onclick="fetchRecords()">Buscar</button>
         <table id="recordsTable">
             <thead>
                 <tr>
@@ -79,9 +87,10 @@
         </table>
     </div>
     <script>
-        // Función para obtener los registros de Google Sheets
+        // Función para obtener los registros filtrados por nombre de Google Sheets
         function fetchRecords() {
-            google.script.run.withSuccessHandler(displayRecords).getRecords();
+            const name = document.getElementById('searchName').value;
+            google.script.run.withSuccessHandler(displayRecords).getRecordsByName(name);
         }
 
         // Función para mostrar los registros en la tabla
@@ -107,9 +116,6 @@
                 tableBody.appendChild(tr);
             });
         }
-
-        // Llama a fetchRecords cuando el documento está listo
-        document.addEventListener('DOMContentLoaded', fetchRecords);
     </script>
 </body>
 </html>
