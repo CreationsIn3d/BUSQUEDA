@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ver y Borrar Registros</title>
+    <title>Ver Datos de Hoja de Cálculo</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -38,21 +38,11 @@
         th {
             background-color: #f2f2f2;
         }
-        button {
-            padding: 10px;
-            background: #333;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #555;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Registros de Materiales de Caseta</h1>
+        <h1>Datos de Hoja de Cálculo</h1>
         <table id="recordsTable">
             <thead>
                 <tr>
@@ -70,7 +60,6 @@
                     <th>Cables Banana - Banana</th>
                     <th>Multímetro</th>
                     <th>Otros</th>
-                    <th>Acción</th>
                 </tr>
             </thead>
             <tbody>
@@ -93,15 +82,6 @@
                     td.textContent = cell;
                     tr.appendChild(td);
                 });
-                const actionTd = document.createElement('td');
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Eliminar';
-                deleteButton.onclick = function() {
-                    const folio = row[0];
-                    google.script.run.withSuccessHandler(fetchRecords).deleteRecord(folio);
-                };
-                actionTd.appendChild(deleteButton);
-                tr.appendChild(actionTd);
                 tableBody.appendChild(tr);
             });
         }
