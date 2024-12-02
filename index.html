@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ver Datos de Hoja de Cálculo</title>
+    <title>Ver y Borrar Datos de Hoja de Cálculo</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -38,6 +38,16 @@
         th {
             background-color: #f2f2f2;
         }
+        button {
+            padding: 10px;
+            background: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #555;
+        }
     </style>
 </head>
 <body>
@@ -60,6 +70,7 @@
                     <th>Cables Banana - Banana</th>
                     <th>Multímetro</th>
                     <th>Otros</th>
+                    <th>Acción</th>
                 </tr>
             </thead>
             <tbody>
@@ -68,10 +79,12 @@
         </table>
     </div>
     <script>
+        // Función para obtener los registros de Google Sheets
         function fetchRecords() {
             google.script.run.withSuccessHandler(displayRecords).getRecords();
         }
 
+        // Función para mostrar los registros en la tabla
         function displayRecords(data) {
             const tableBody = document.getElementById('recordsTable').getElementsByTagName('tbody')[0];
             tableBody.innerHTML = '';
@@ -82,10 +95,20 @@
                     td.textContent = cell;
                     tr.appendChild(td);
                 });
+                const actionTd = document.createElement('td');
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Eliminar';
+                deleteButton.onclick = function() {
+                    const folio = row[0];
+                    google.script.run.withSuccessHandler(fetchRecords).deleteRecord(folio);
+                };
+                actionTd.appendChild(deleteButton);
+                tr.appendChild(actionTd);
                 tableBody.appendChild(tr);
             });
         }
 
+        // Llama a fetchRecords cuando el documento está listo
         document.addEventListener('DOMContentLoaded', fetchRecords);
     </script>
 </body>
