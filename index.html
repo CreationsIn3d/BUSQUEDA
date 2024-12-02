@@ -97,7 +97,7 @@
         function displayRecords(data) {
             const tableBody = document.getElementById('recordsTable').getElementsByTagName('tbody')[0];
             tableBody.innerHTML = '';
-            data.slice(1).forEach(row => {
+            data.forEach(row => {
                 const tr = document.createElement('tr');
                 row.forEach(cell => {
                     const td = document.createElement('td');
