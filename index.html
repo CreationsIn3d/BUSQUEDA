@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver y Borrar Registros</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: #000000;
+        }
+        .container {
+            width: 100%;
+            margin: auto;
+            overflow: hidden;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        button {
+            padding: 10px;
+            background: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Registros de Materiales de Caseta</h1>
+        <table id="recordsTable">
+            <thead>
+                <tr>
+                    <th>Folio</th>
+                    <th>Fecha</th>
+                    <th>Nombre y Apellidos</th>
+                    <th>Número del Control</th>
+                    <th>Correo Electrónico Institucional</th>
+                    <th>N° de Aula</th>
+                    <th>Actividad a Realizar</th>
+                    <th>Puntas de Osciloscopio</th>
+                    <th>Puntas de Generador</th>
+                    <th>Cables Banana - Caimán</th>
+                    <th>Cables Caimán - Caimán</th>
+                    <th>Cables Banana - Banana</th>
+                    <th>Multímetro</th>
+                    <th>Otros</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Los registros se añadirán aquí con JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function fetchRecords() {
+            google.script.run.withSuccessHandler(displayRecords).getRecords();
+        }
+
+        function displayRecords(data) {
+            const tableBody = document.getElementById('recordsTable').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = '';
+            data.slice(1).forEach(row => {
+                const tr = document.createElement('tr');
+                row.forEach(cell => {
+                    const td = document.createElement('td');
+                    td.textContent = cell;
+                    tr.appendChild(td);
+                });
+                const actionTd = document.createElement('td');
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Eliminar';
+                deleteButton.onclick = function() {
+                    const folio = row[0];
+                    google.script.run.withSuccessHandler(fetchRecords).deleteRecord(folio);
+                };
+                actionTd.appendChild(deleteButton);
+                tr.appendChild(actionTd);
+                tableBody.appendChild(tr);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchRecords);
+    </script>
+</body>
+</html>
